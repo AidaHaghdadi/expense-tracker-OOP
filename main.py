@@ -21,3 +21,11 @@ class ExpenseTracker: # Responsible for managing collections of expenses.
             print("\nExpenses list:")
             for index, expense in enumerate(self.expenses): # `expense` is an instance of `Expense`.
                 print(f"{index + 1}- Title: {expense.title} | Amount: {expense.amount} | Date: {expense.date}")
+
+    # Search expense function
+    def search_expense(self, search_title):
+        results = []
+        for expense in self.expenses:
+            if search_title == expense.title:
+                results.append(expense)
+        return results
