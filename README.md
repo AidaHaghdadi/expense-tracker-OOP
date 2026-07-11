@@ -79,7 +79,7 @@ cd expense-tracker-OOP
 Run the program:
 
 ```bash
-python expense_tracker.py
+python main.py
 ```
 
 ## Author
