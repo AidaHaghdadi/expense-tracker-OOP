@@ -85,5 +85,3 @@ python main.py
 ## Author
 
 **Aida Haghdadi**
-
-GitHub: https://github.com/AidaHaghdadi
