@@ -44,13 +44,23 @@ class ExpenseTracker: # Responsible for managing collections of expenses.
     # Calculate average function
     def calculate_average(self):
         total_amount = self.calculate_total()
-        
+
         if total_amount is None:
             return None
 
         average_amount = total_amount / len(self.expenses)
         return average_amount
-    
+
+    # Delete expense function
+    def delete_expense(self, deleted_exp, ask):
+        if ask == "y" :
+            deleted_exp -= 1
+            self.expenses.pop(deleted_exp)
+            return True
+        elif ask == "n" :
+            return "cancel"
+        else :
+            return "invalid_choice"
 
 def show_menu():
     print("\n1- Add Expense")
@@ -109,8 +119,8 @@ while user_selection != 7:
             print("No expense found!")
         else:
             count = len(result)
-            for index, expense_info in enumerate(result):
-                print(f"{index + 1}- Title: {expense_info.title} | Amount: {expense_info.amount} | Date: {expense_info.date}")
+            for index, expense in enumerate(result):
+                print(f"{index + 1}- Title: {expense.title} | Amount: {expense.amount} | Date: {expense.date}")
             print(f"{count} expense(s) found.")
 
     elif user_selection == 4:
@@ -126,10 +136,30 @@ while user_selection != 7:
             print("No expense found!")
         else :
             print(f"Average is : {average}")
-        
 
-    # elif user_selection == 6 :
+    elif user_selection == 6 :
+        if not tracker.expenses:
+            print("No expense found!")
+        else :
+            tracker.show_expenses()
+            try:
+                expense_number = int(input("Enter the number of expense :"))
+            except ValueError:
+                print("Invalid input!")
+                continue
+            if not (1<= expense_number <= len(tracker.expenses)):
+                print("Invalid expense number.")
+                continue
+            
+            ask = input("Are you sure you want delete this expense (y/n):").lower()
+            delete_number = tracker.delete_expense(expense_number, ask)
         
+            if delete_number is True:
+                print("Expense deleted!")
+            elif delete_number == "cancel":
+                print("Deletion canceled.")
+            elif delete_number == "invalid_choice":
+                print("invalid_choice!")
 
     elif user_selection == 7 :
         print("Exit from program.")
