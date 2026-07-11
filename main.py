@@ -33,6 +33,9 @@ class ExpenseTracker: # Responsible for managing collections of expenses.
 
     # Calculate total function
     def calculate_total(self):
+        if not self.expenses:
+            return None
+
         total_amount = 0
         for expense in self.expenses :
             total_amount += expense.amount
@@ -40,10 +43,11 @@ class ExpenseTracker: # Responsible for managing collections of expenses.
 
     # Calculate average function
     def calculate_average(self):
-        if not self.expenses :
+        total_amount = self.calculate_total()
+        
+        if total_amount is None:
             return None
 
-        total_amount = self.calculate_total()
         average_amount = total_amount / len(self.expenses)
         return average_amount
     
@@ -61,18 +65,18 @@ def create_expense():
     expense_title = input("Enter the title of expense :").capitalize()
     # Value validation
     while True:
-        try :
+        try:
             expense_amount = float(input("Enter the amount of expense:"))
             break
-        except ValueError :
+        except ValueError:
             print("Invalid input!")
     # Date validation
     while True:
-        try :
+        try:
             expense_date = input("Enter date of expense [YYYY-MM-DD]:")
             datetime.strptime(expense_date, "%Y-%m-%d")
             break
-        except ValueError :
+        except ValueError:
             print("Invalid date! Example: 2026-07-01")
             
     expense = Expense(expense_title,expense_amount,expense_date)
@@ -82,37 +86,46 @@ def create_expense():
 tracker = ExpenseTracker()
 
 user_selection = None
-while user_selection != 7 :
+while user_selection != 7:
     show_menu()
-    try :
+    try:
         user_selection = int(input("Enter your selection :"))
-    except ValueError :
+    except ValueError:
         print("Invalid input!")
         continue
 
-    if user_selection == 1 :
+    if user_selection == 1:
         expense = create_expense()
         tracker.add_expense(expense)
         print("Expense added.")
 
-    elif user_selection == 2 :
+    elif user_selection == 2:
         tracker.show_expenses()
 
-    elif user_selection == 3 :
+    elif user_selection == 3:
         search_title = input("Enter the title of expense :").capitalize()
         result = tracker.search_expense(search_title)
-        if not result :
+        if not result:
             print("No expense found!")
-        else :
+        else:
             count = len(result)
-            for index, expense_info in enumerate(result) :
+            for index, expense_info in enumerate(result):
                 print(f"{index + 1}- Title: {expense_info.title} | Amount: {expense_info.amount} | Date: {expense_info.date}")
             print(f"{count} expense(s) found.")
 
-    # elif user_selection == 4 :
-        
+    elif user_selection == 4:
+        total = tracker.calculate_total()
+        if total is None:
+            print("No expense found!")
+        else :
+            print(f"Total is {total}")
     
-    # elif user_selection == 5 :
+    elif user_selection == 5:
+        average = tracker.calculate_average()
+        if average is None:
+            print("No expense found!")
+        else :
+            print(f"Average is : {average}")
         
 
     # elif user_selection == 6 :
